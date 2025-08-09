@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan Point - Final</title>
+
+<style>
+/* ====== MODE TERANG ====== */
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  .icon-btn.edit {
+    color: #000;
+    background-color: #e0f3ff;
+  }
+  .icon-btn.delete {
+    color: #000;
+    background-color: #ffe0e0;
+  }
+  .icon-btn:hover {
+    filter: brightness(0.9);
+  }
+  .modal {
+    background-color: #ffffff;
+    color: #000;
+  }
+}
+
+/* ====== MODE GELAP ====== */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  .icon-btn.edit {
+    color: #fff;
+    background-color: #0077cc;
+  }
+  .icon-btn.delete {
+    color: #fff;
+    background-color: #cc3333;
+  }
+  .icon-btn.edit:hover {
+    animation: pulseGlowBlue 1.2s infinite;
+  }
+  .icon-btn.delete:hover {
+    animation: pulseGlowRed 1.2s infinite;
+  }
+  .modal {
+    background-color: #1e1e1e;
+    color: #fff;
+  }
+}
+
+/* Animasi glow biru */
+@keyframes pulseGlowBlue {
+  0% { box-shadow: 0 0 8px rgba(0,119,204,0.5); transform: translateY(0); }
+  50% { box-shadow: 0 0 16px rgba(0,119,204,0.9); transform: translateY(-2px); }
+  100% { box-shadow: 0 0 8px rgba(0,119,204,0.5); transform: translateY(0); }
+}
+
+/* Animasi glow merah */
+@keyframes pulseGlowRed {
+  0% { box-shadow: 0 0 8px rgba(204,51,51,0.5); transform: translateY(0); }
+  50% { box-shadow: 0 0 16px rgba(204,51,51,0.9); transform: translateY(-2px); }
+  100% { box-shadow: 0 0 8px rgba(204,51,51,0.5); transform: translateY(0); }
+}
+
+/* ====== Styling umum ====== */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid rgba(150,150,150,0.3);
+  text-align: center;
+}
+
+th {
+  background-color: rgba(150,150,150,0.1);
+}
+
+.icon-btn {
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 6px;
+  margin: 2px;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.3s, filter 0.3s;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.btn {
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid currentColor;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+</style>
+</head>
+<body>
+
+<h1>Laporan Point - Final</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nama</th>
+      <th>Poin</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Budi</td>
+      <td>85</td>
+      <td>
+        <button class="icon-btn edit" data-act="edit" data-id="1">EDIT</button>
+        <button class="icon-btn delete" data-act="delete" data-id="1">HAPUS</button>
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Siti</td>
+      <td>92</td>
+      <td>
+        <button class="icon-btn edit" data-act="edit" data-id="2">EDIT</button>
+        <button class="icon-btn delete" data-act="delete" data-id="2">HAPUS</button>
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Andi</td>
+      <td>78</td>
+      <td>
+        <button class="icon-btn edit" data-act="edit" data-id="3">EDIT</button>
+        <button class="icon-btn delete" data-act="delete" data-id="3">HAPUS</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Delete modal -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modaltitle">
+    <h3 id="modaltitle">Konfirmasi Hapus</h3>
+    <p id="modalMsg">Apakah Anda yakin ingin menghapus entri ini? Tindakan ini tidak dapat dibatalkan.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+      <button class="btn" id="confirmDelete">Ya, Hapus</button>
+      <button class="btn ghost" id="cancelDelete">Batal</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const modalBackdrop = document.getElementById('modalBackdrop');
+const deleteButtons = document.querySelectorAll('[data-act="delete"]');
+const cancelBtn = document.getElementById('cancelDelete');
+const confirmBtn = document.getElementById('confirmDelete');
+let deleteTargetId = null;
+
+// Klik tombol hapus → tampilkan modal
+deleteButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    deleteTargetId = btn.getAttribute('data-id');
+    modalBackdrop.style.display = 'flex';
+    modalBackdrop.setAttribute('aria-hidden', 'false');
+  });
+});
+
+// Tutup modal
+function closeModal() {
+  modalBackdrop.style.display = 'none';
+  modalBackdrop.setAttribute('aria-hidden', 'true');
+}
+
+cancelBtn.addEventListener('click', closeModal);
+
+// Konfirmasi hapus
+confirmBtn.addEventListener('click', () => {
+  closeModal();
+  alert(`Data dengan ID ${deleteTargetId} dihapus!`);
+});
+</script>
+
+</body>
+</html>
