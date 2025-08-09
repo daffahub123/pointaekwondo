@@ -551,6 +551,7 @@ $('#toggleTheme').addEventListener('click', ()=>{
 document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape' && $('#modalBackdrop').classList.contains('show')) cancelDelete();
 });
-</script>
+<script src="script.js?v=<?php echo time(); ?>"></script>
+<link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
 </body>
 </html>
