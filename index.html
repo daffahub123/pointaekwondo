@@ -551,10 +551,8 @@ $('#toggleTheme').addEventListener('click', ()=>{
 document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape' && $('#modalBackdrop').classList.contains('show')) cancelDelete();
 });
-<script>
-const version = new Date().getTime(); // auto generate timestamp
-document.write('<link rel="stylesheet" href="style.css?v=' + version + '">');
-document.write('<script src="script.js?v=' + version + '"><\/script>');
+  <script src="script.js"></script>
+<link rel="stylesheet" href="style.css">
 </script>
-<body>
+</body>
 </html>
